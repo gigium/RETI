@@ -10,30 +10,31 @@
 
 #include "libs/server-utls.h"
 #define BUFFERSIZE 	512
+#define PORT 2323
 
 void HandleServer(int clientSock)
 {
-	int bytesRcvd;
-	int totalBytesRcvd = 0;
+	//int bytesRcvd;
+//	int totalBytesRcvd = 0;
 	char buf[BUFFERSIZE]; // buffer for data from the server
-	char string1 [50];
-	char string2 [60];
+	char string1[50];
 
 	printf("Received: "); // Setup to print the echoed string
-	bytesRcvd = recv(clientSock, buf, BUFFERSIZE - 1, 0);
-	totalBytesRcvd += bytesRcvd; // Keep tally of total bytes
-	buf[bytesRcvd] = '\0'; // Add \0 so printf knows where to stop
+	recv(clientSock, buf, BUFFERSIZE, 0);
 	printf("%s", buf);
-
 	printf("\n");
-	printf("inserire due stringhe : \n");
-	printf("prima : ");
-	scanf("%s", string1);
-	send(clientSock, string1, sizeof(string1), 0);
-	printf("seconda : ");
-	scanf("%s", string2);
-	send(clientSock, string1, sizeof(string1), 0);
+	fflush(stdout);
 
+
+	printf("inserire stringhe : \n");
+	int i = 0;
+	while(1)
+	{
+		i = i + 1;
+		printf("%d : ", i);
+		scanf("%s", &string1);
+		send(clientSock, string1, BUFFERSIZE, 0);
+	}
 
 }
 
@@ -54,7 +55,7 @@ int main()
 		// Creare un elemento di tipo sockaddr_in : sad
 		struct sockaddr_in sad;
 		memset(&sad, 0, sizeof(sad)); // ensures that extra bytes contain 0
-		sockAddress(&sad,  AF_INET, "127.0.0.1",  4521);      //avvalora la struct sockaddr_in
+		sockAddress(&sad,  AF_INET, "127.0.0.1",  PORT);      //avvalora la struct sockaddr_in
 
 
 		if (connect(Mysocket,(struct sockaddr *) &sad, sizeof(sad)) < 0)
