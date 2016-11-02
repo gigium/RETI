@@ -19,7 +19,7 @@ int IsNumber(char* string)
 	int i;
 	for(i=0; i < strlen(string); i++)
 	{
-		if(string[i] <= 48 || string[i] >= 57)
+		if(string[i] < 48 || string[i] > 57)
 		{
 			return -1;
 		}
@@ -47,7 +47,7 @@ void HandleTCPClient(int Socket)
 		{
 			if(MySend(Socket, quitstring, BUFFERSIZE, 0)==-1)
 				return;
-			printf("lost connection... /n");
+			printf("lost connection... \n");
 			return;
 		}
 		int_number = atoi(number);
@@ -74,19 +74,20 @@ int main()
 
 		int Mysocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
 		if (Mysocket < 0)
-		{
 				ErrorHandler(Mysocket, "socket creation failed.\n");
-				return 0;
-		}
+
 
 		struct sockaddr_in sad;
 
 		//memset(&sad, 0, sizeof(sad)); // ensures that extra bytes contain 0
 		SockAddressInit(&sad,  AF_INET, "127.0.0.1",  PORT);      //avvalora la struct sockaddr_in
+
 		MyBind(Mysocket,  &sad);
+
 		setRequestListener(Mysocket ,6);
 
 		MainServerLoop(Mysocket, HandleTCPClient);
+
 		CloseSocket(Mysocket);
 		return 0;
 } // main end

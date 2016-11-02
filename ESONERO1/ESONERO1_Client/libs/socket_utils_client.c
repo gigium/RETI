@@ -37,24 +37,6 @@ void MyConnect(int socket, struct sockaddr_in* sad)
 }
 
 
-void MainServerLoop(int socket, void(*handleClient)(int))
-{
-			struct sockaddr_in cad;				 //structure for the client address
-			int clientSocket;					//socket descriptor for the client
-			int clientLen;					//the size of the client address
-			fflush(stdout);
-			while (1)
-			{
-						clientLen = sizeof(cad); 			//set the size of the client address
-						if ((clientSocket = accept(socket, (struct sockaddr *)&cad, 	&clientLen)) < 0)
-						{
-							ErrorHandler(socket, "accept() failed.\n");
-						}
-						// clientSocket is connected to a client
-						printf( "server connected to ... %s\n", inet_ntoa(cad.sin_addr) );
-						handleClient(clientSocket);
-			}// end of the while loop
-}
 
 
 void ErrorHandler(int socket , char *errorMessage)
@@ -80,25 +62,6 @@ void ClearWinSock()
 		WSACleanup();
 		#endif
 }
-
-
-
-
-void MyBind(int socket ,  struct sockaddr_in* sad)
-{
-		if (bind(socket, sad, sizeof(*sad)) <0)
-				ErrorHandler(socket, "bind() failed.\n");
-}
-
-
-
-
-void setRequestListener(int socket, int queue_len)
-{
-	if (listen (socket, queue_len) < 0)
-			ErrorHandler(socket , "listen() failed.\n");
-}
-
 
 
 

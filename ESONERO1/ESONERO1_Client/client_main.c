@@ -21,6 +21,7 @@ void HandleServer(int Socket)
 	char welcome_message[BUFFERSIZE];
 	char number[50];
 	char server_message[50];
+
 	MyRecieve(Socket, welcome_message, BUFFERSIZE, 0);
 	printf("%s\n",welcome_message);
 
@@ -32,6 +33,7 @@ void HandleServer(int Socket)
 		MySend(Socket, number, BUFFERSIZE, 0);
 
 		MyRecieve(Socket, server_message, BUFFERSIZE, 0);
+
 		printf("SERVER : %s\n\n" , server_message);
 		fflush(stdout);
 		if(strcmp(server_message, quitstring) == 0)
@@ -39,6 +41,7 @@ void HandleServer(int Socket)
 
 	}
 }
+
 
 int main()
 {
